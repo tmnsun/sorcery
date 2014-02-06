@@ -11,6 +11,7 @@ module Sorcery
           require 'sorcery/providers/facebook'
           require 'sorcery/providers/twitter'
           require 'sorcery/providers/vk'
+          require 'sorcery/providers/odnoklassniki'
           require 'sorcery/providers/linkedin'
           require 'sorcery/providers/liveid'
           require 'sorcery/providers/xing'
