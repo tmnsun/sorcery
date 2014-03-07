@@ -26,6 +26,7 @@ module Sorcery
 
         params = {
           method: 'users.getCurrentUser',
+          fields: 'uid,first_name,last_name,gender,birthday,pic190x190,photo_id,location',
           application_key: @key
         }
 

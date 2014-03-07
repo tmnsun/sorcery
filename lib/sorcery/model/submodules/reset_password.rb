@@ -130,7 +130,7 @@ module Sorcery
           end
 
           protected
-          
+
           def send_reset_password_email!
             generic_send_email(:reset_password_email_method_name, :reset_password_mailer)
           end
