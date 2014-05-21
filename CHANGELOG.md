@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.8.5 (not released)
+## 0.8.6 (not released)
+
+* `current_user` returns `nil` instead of `false` if there's no user loggd in (#493)
+*  MongoMapper adapter does not override `save!` method anymore. However due to ORM's lack of support for `validate: false` in `save!`, the combination of `validate: false` and `raise_on_failure: true` is not possible in MongoMapper. The errors will not be raised in this situation. (#151)
+* Fixed rename warnings for bcrypt-ruby
+
+
+## 0.8.5
 * Fixed add_provider_to_user with CamelCased authentications_class model (#382)
 * Fixed unlock_token_mailer_disabled to only disable automatic mailing (#467)
 * Make send_email_* methods easier to overwrite (#473)

@@ -12,13 +12,12 @@ module Sorcery
           self.class.increment(id, attr => 1)
         end
 
-        def save!(options = {})
-          save(options)
-        end
-
         def sorcery_save(options = {})
-          mthd = options.delete(:raise_on_failure) ? :save! : :save
-          self.send(mthd, options)
+          if options.delete(:raise_on_failure) && options[:validate] != false
+            save! options
+          else
+            save options
+          end
         end
 
         def update_many_attributes(attrs)
@@ -27,7 +26,7 @@ module Sorcery
 
         module ClassMethods
           def credential_regex(credential)
-            return { :$regex =>  /^#{credential}$/i  }  if (@sorcery_config.downcase_username_before_authenticating)
+            return { :$regex =>  /^#{Regexp.escape(credential)}$/i  }  if (@sorcery_config.downcase_username_before_authenticating)
             return credential
           end
 
