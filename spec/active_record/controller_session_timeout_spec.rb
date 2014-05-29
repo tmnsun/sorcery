@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SorceryController do
+describe SorceryController, :active_record => true do
 
   # ----------------- SESSION TIMEOUT -----------------------
   describe SorceryController, "with session timeout features" do
@@ -27,6 +27,13 @@ describe SorceryController do
       get :test_should_be_logged_in
       session[:user_id].should be_nil
       response.should be_a_redirect
+    end
+
+    it "should work if the session is stored as a string or a Time" do
+      session[:login_time] = Time.now.to_s
+      get :test_login, :email => 'bla@bla.com', :password => 'secret'
+      session[:user_id].should_not be_nil
+      response.should be_a_success
     end
 
     context "with 'session_timeout_from_last_action'" do

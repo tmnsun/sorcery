@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SorceryController do
+describe SorceryController, :active_record => true do
 
   # ----------------- PLUGIN CONFIGURATION -----------------------
   describe SorceryController, "plugin configuration" do
@@ -175,7 +175,7 @@ describe SorceryController do
       session[:user_id].should be_nil
       subject.current_user.should be_nil
       get :test_auto_login
-      assigns[:result].should == User.find(:first)
+      assigns[:result].should == User.first
     end
   end
 
