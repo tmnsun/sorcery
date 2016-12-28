@@ -103,7 +103,7 @@ module Sorcery
       # @param [<User-Model>] user the user instance.
       # @return - do not depend on the return value.
       def auto_login(user, should_remember = false)
-        session[:user_id] = user.id
+        session[:user_id] = user.id.to_s
         @current_user = user
       end
 
@@ -126,7 +126,9 @@ module Sorcery
       end
 
       def login_from_session
-        @current_user = (user_class.find_by_id(session[:user_id]) if session[:user_id]) || nil
+        @current_user = if session[:user_id]
+                          user_class.sorcery_adapter.find_by_id(session[:user_id])
+                        end
       end
 
       def after_login!(user, credentials = [])
@@ -151,66 +153,5 @@ module Sorcery
 
     end
 
-    module Config
-      class << self
-        attr_accessor :submodules,
-                      :user_class,                    # what class to use as the user class.
-                      :not_authenticated_action,      # what controller action to call for non-authenticated users.
-
-                      :save_return_to_url,            # when a non logged in user tries to enter a page that requires
-                                                      # login, save the URL he wanted to reach,
-                                                      # and send him there after login.
-
-                      :cookie_domain,                 # set domain option for cookies
-
-                      :login_sources,
-                      :after_login,
-                      :after_failed_login,
-                      :before_logout,
-                      :after_logout
-
-        def init!
-          @defaults = {
-            :@user_class                           => nil,
-            :@submodules                           => [],
-            :@not_authenticated_action             => :not_authenticated,
-            :@login_sources                        => [],
-            :@after_login                          => [],
-            :@after_failed_login                   => [],
-            :@before_logout                        => [],
-            :@after_logout                         => [],
-            :@save_return_to_url                   => true,
-            :@cookie_domain                        => nil
-          }
-        end
-
-        # Resets all configuration options to their default values.
-        def reset!
-          @defaults.each do |k,v|
-            instance_variable_set(k,v)
-          end
-        end
-
-        def update!
-          @defaults.each do |k,v|
-            instance_variable_set(k,v) if !instance_variable_defined?(k)
-          end
-        end
-
-        def user_config(&blk)
-          block_given? ? @user_config = blk : @user_config
-        end
-
-        def configure(&blk)
-          @configure_blk = blk
-        end
-
-        def configure!
-          @configure_blk.call(self) if @configure_blk
-        end
-      end
-      init!
-      reset!
-    end
-  end
+	end
 end

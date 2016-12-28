@@ -1,11 +1,49 @@
 # Changelog
 
-## 0.8.6 (not released)
+## 1.0 (not released yet)
+
+* Adapters (Mongoid, MongoMapper, DataMapper) are now separated from the core Sorcery repo and moved under `sorcery-rails` organization. Special thanks to @juike!
+
+## 0.9.1
+
+* Fixed fetching private emails from github (thanks to @saratovsource)
+* Added support for `active_for_authentication?` method (thanks to @gchaincl)
+* Fixed migration bug for `external` submodule (thanks to @skv-headless)
+* Added support for new Facebook Graph API (thanks to @mchaisse)
+* Fixed issue with Xing submodule (thanks to @yoyostile)
+* Fixed security bug with using `state` field in oAuth requests
+
+## 0.9.0
+
+* Sending emails works with Rails 4.2 (thanks to @wooly)
+* Added `valid_password?` method
+* Added support for JIRA OAuth (thanks to @camilasan)
+* Added support for Heroku OAuth (thanks to @tyrauber)
+* Added support for Salesforce OAuth (thanks to @supremebeing7)
+* Added support for Mongoid 4
+* Fixed issues with empty passwords (thanks to @Borzik)
+* `find_by_provider_and_uid` method was replaced with `find_by_oauth_credentials`
+* Sorcery::VERSION constant was added to allow easy version check
+* `@user.setup_activation` method was made to be public (thanks @iTakeshi)
+* `current_users` method is deprecated
+* Fetching email from VK auth, thanks to @makaroni4
+* Add logged_in? method to test_helpers (thanks to @oriolbcn)
+* #locked? method is now public API (thanks @rogercampos)
+* Introduces a new User instance method `generate_reset_password_token` to generate a new reset password token without sending an email (thanks to @tbuehl)
+
+## 0.8.6
 
 * `current_user` returns `nil` instead of `false` if there's no user loggd in (#493)
-*  MongoMapper adapter does not override `save!` method anymore. However due to ORM's lack of support for `validate: false` in `save!`, the combination of `validate: false` and `raise_on_failure: true` is not possible in MongoMapper. The errors will not be raised in this situation. (#151)
+* MongoMapper adapter does not override `save!` method anymore. However due to ORM's lack of support for `validate: false` in `save!`, the combination of `validate: false` and `raise_on_failure: true` is not possible in MongoMapper. The errors will not be raised in this situation. (#151)
 * Fixed rename warnings for bcrypt-ruby
-
+* The way Sorcery adapters are included has been changed due to problem with multiple `included` blocks error in `ActiveSupport::Concern` class (#527)
+* Session timeout works with new cookie serializer introduced in Rails 4.1
+* Rails 4.1 compatibility bugs were fixed, this version is fully supported (#538)
+* VK providers now supports `scope` option
+* Support for DataMapper added
+* Helpers for integration tests were added
+* Fixed problems with special characters in user login attributes (MongoMapper & Mongoid)
+* Fixed remaining `password_confirmation` value - it is now cleared just like `password`
 
 ## 0.8.5
 * Fixed add_provider_to_user with CamelCased authentications_class model (#382)
